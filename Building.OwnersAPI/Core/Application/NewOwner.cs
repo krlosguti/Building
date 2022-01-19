@@ -66,7 +66,11 @@ namespace Building.OwnersAPI.Core.Application
                 var result = await _context.SaveChangesAsync();
                 return (result > 0) ? Unit.Value : throw new Exception("Cannot insert new Owner");
             }
-
+            /// <summary>
+            /// Upload a image file to the server
+            /// </summary>
+            /// <param name="PhotoFile"></param>
+            /// <returns></returns>
             private string UploadedFile(IFormFile PhotoFile)
             {
                 string uniqueFileName = null;
