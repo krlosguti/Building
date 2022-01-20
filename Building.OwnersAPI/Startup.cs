@@ -1,21 +1,18 @@
+using Building.OwnersAPI.Core.Application;
 using Building.OwnersAPI.Core.Context;
+using Building.OwnersAPI.Core.Entities;
 using Building.OwnersAPI.Repository;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Building.OwnersAPI
 {
@@ -31,7 +28,6 @@ namespace Building.OwnersAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IOwnerRepository, OwnerRepository>();
             services.AddDbContext<OwnerContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("OwnerContext")));
             services.AddControllers();
@@ -39,6 +35,13 @@ namespace Building.OwnersAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Building.OwnersAPI", Version = "v1" });
             });
+
+            services.AddMediatR(typeof(NewOwner.HandlerOwner).Assembly);
+
+            services.AddAutoMapper(typeof(QueryOwner.HandlerOwner));
+
+            services.AddTransient<IGenericRepository<Owner>, GenericRepository<Owner>>();
+            services.AddTransient<IUnitofWork, UnitofWork>();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ecBTs2BzoDRC6ct5yMPPSFMrU1xMzOLd"));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>

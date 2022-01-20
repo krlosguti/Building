@@ -1,5 +1,4 @@
-﻿using Building.OwnersAPI.Core.Context;
-using Building.OwnersAPI.Core.Entities;
+﻿using Building.OwnersAPI.Core.Entities;
 using Building.OwnersAPI.Repository;
 using FluentValidation;
 using MediatR;
@@ -12,18 +11,22 @@ using System.Threading.Tasks;
 
 namespace Building.OwnersAPI.Core.Application
 {
-    public class NewOwner
+    public class UpdateOwner
     {
         public class ExecuteOwner : IRequest
         {
             /// <summary>
+            /// Identifier of the owner changed
+            /// </summary>
+            public Guid IdOwner { get; set; }
+            /// <summary>
             /// Name of the owner
             /// </summary>
-            public string Name { get; set; } = "";
+            public string Name { get; set; }
             /// <summary>
             /// Address of the owner of the property
             /// </summary>
-            public string Address { get; set; } = "";
+            public string Address { get; set; }
             /// <summary>
             /// Localization in of the photo file on the server
             /// </summary>
@@ -38,9 +41,7 @@ namespace Building.OwnersAPI.Core.Application
         {
             public ExecuteValidation()
             {
-                RuleFor(x => x.Name).NotEmpty();
-                RuleFor(x => x.Address).NotEmpty();
-                RuleFor(x => x.Birthday).LessThan(DateTime.Now);
+                RuleFor(x => x.IdOwner).NotEmpty();
             }
         }
         public class HandlerOwner : IRequestHandler<ExecuteOwner>
@@ -56,11 +57,12 @@ namespace Building.OwnersAPI.Core.Application
             }
             public async Task<Unit> Handle(ExecuteOwner request, CancellationToken cancellationToken)
             {
+                //delete previous file
                 string uniqueFileName = UploadedFile(request.PhotoFile);
 
                 var owner = new Owner
                 {
-                    IdOwner = Guid.NewGuid(),
+                    IdOwner = request.IdOwner,
                     Name = request.Name,
                     Address = request.Address,
                     Photo = uniqueFileName,
@@ -69,13 +71,13 @@ namespace Building.OwnersAPI.Core.Application
 
                 try
                 {
-                    await _unitofWork.Owners.Insert(owner);
+                    _unitofWork.Owners.Update(owner);
                     await _unitofWork.Save();
                     return Unit.Value;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    _logger.LogError(ex, $"Something Went Wrong in the {nameof(NewOwner)}");
+                    _logger.LogError(ex, $"Something Went Wrong in the {nameof(UpdateOwner)}");
                     throw new Exception("500 Internal Server Error. Please Try Again Later.");
                 };
             }
