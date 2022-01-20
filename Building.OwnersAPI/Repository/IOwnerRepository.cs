@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace Building.OwnersAPI.Repository
 {
-    public interface IOwnerRepository
+    public interface IOwnerRepository 
     {
-        Task<IEnumerable<Owner>> GetOwners();
-        Task<PaginationEntity> PaginationBy(
-            Expression<Func<bool>> filterExpression,
-            PaginationEntity pagination);
+        Task<Owner> Get(Guid id);
 
+        Task<List<Owner>> GetAll(RequestParameters request=null);
+
+        Task Insert(Owner owner);
+
+        Task Delete(Guid id);
+
+        void Update(Owner owner);
     }
 }

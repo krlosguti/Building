@@ -40,10 +40,10 @@ namespace Building.OwnersAPI
 
             services.AddAutoMapper(typeof(QueryOwner.HandlerOwner));
 
-            services.AddTransient<IGenericRepository<Owner>, GenericRepository<Owner>>();
+            services.AddTransient<IOwnerRepository, OwnerRepository>();
             services.AddTransient<IUnitofWork, UnitofWork>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ecBTs2BzoDRC6ct5yMPPSFMrU1xMzOLd"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
             {
                 opt.TokenValidationParameters = new TokenValidationParameters

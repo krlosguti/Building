@@ -8,16 +8,16 @@ namespace Building.OwnersAPI.Repository
     public class UnitofWork : IUnitofWork
     {
         private readonly OwnerContext _context;
-        private IGenericRepository<Owner> _owners;
+        private IOwnerRepository _owners;
 
-        public UnitofWork(OwnerContext context, IGenericRepository<Owner> owners)
+        public UnitofWork(OwnerContext context, IOwnerRepository owners)
         {
             _context = context;
             _owners = owners;
         }
 
 
-        public IGenericRepository<Owner> Owners => _owners ??= new GenericRepository<Owner>(_context);
+        public IOwnerRepository Owners => _owners ??= new OwnerRepository(_context);
 
         public void Dispose()
         {

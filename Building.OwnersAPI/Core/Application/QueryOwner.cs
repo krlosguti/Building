@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Building.OwnersAPI.Repository;
+using System.Linq.Expressions;
+using System.Linq;
 
 namespace Building.OwnersAPI.Core.Application
 {
@@ -17,7 +19,12 @@ namespace Building.OwnersAPI.Core.Application
     {
         public class GetOwner : IRequest<List<OwnerDTO>>
         {
+            public GetOwner(RequestParameters requestParameters)
+            {
+                this.requestParameters = requestParameters;
+            }
 
+            public RequestParameters requestParameters { get; set; }
         }
 
         public class HandlerOwner : IRequestHandler<GetOwner, List<OwnerDTO>>
@@ -36,7 +43,7 @@ namespace Building.OwnersAPI.Core.Application
             {
                 try 
                 {
-                    var owners = await _unitofWork.Owners.GetAll();
+                    var owners = await _unitofWork.Owners.GetAll(request.requestParameters);
                     var ownersDTO = _mapper.Map<List<Owner>, List<OwnerDTO>>(owners);
                     return ownersDTO;
                 } 

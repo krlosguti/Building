@@ -38,7 +38,7 @@ namespace Building.Gateway
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Building.Gateway", Version = "v1" });
             });
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ecBTs2BzoDRC6ct5yMPPSFMrU1xMzOLd"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
             {
                 opt.TokenValidationParameters = new TokenValidationParameters

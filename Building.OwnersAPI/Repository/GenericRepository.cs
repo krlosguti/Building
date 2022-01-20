@@ -1,9 +1,12 @@
 ﻿using Building.OwnersAPI.Core.Context;
+using Building.OwnersAPI.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace Building.OwnersAPI.Repository
 {
@@ -25,7 +28,7 @@ namespace Building.OwnersAPI.Repository
 
         }
 
-        public async Task<T> Get(System.Linq.Expressions.Expression<Func<T, bool>> expression, List<string> includes = null)
+        public async Task<T> Get(Expression<Func<T, bool>> expression, List<string> includes = null)
         {
             IQueryable<T> query = _db;
             if (includes != null)
@@ -38,9 +41,10 @@ namespace Building.OwnersAPI.Repository
             return await query.AsNoTracking().FirstOrDefaultAsync(expression);
         }
 
-        public async Task<List<T>> GetAll(System.Linq.Expressions.Expression<Func<T, bool>> expression = null, Func<System.Linq.IQueryable<T>, System.Linq.IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
+        public async Task<List<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
         {
             IQueryable<T> query = _db;
+
             if (expression != null)
             {
                 query = query.Where(expression);
@@ -52,15 +56,43 @@ namespace Building.OwnersAPI.Repository
                 {
                     query = query.Include(includeProperty);
                 }
-
-                if (orderBy != null)
-                {
-                    query = orderBy(query);
-                }
             }
+
+            if (orderBy != null)
+            {
+                query = orderBy(query);
+            }
+
             return await query.AsNoTracking().ToListAsync();
         }
 
+        public async Task<List<T>> GetPagedList(FilterParameters<T> requestParams)
+        {
+            IQueryable<T> query = _db;
+
+            if (requestParams.expression != null)
+            {
+                query = query.Where(requestParams.expression);
+            }
+
+            if (requestParams.includes != null)
+            {
+                foreach (var includeProperty in requestParams.includes)
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            if (requestParams.orderBy != null)
+            {
+                query = requestParams.orderBy(query);
+            }
+
+            return await query.AsNoTracking()
+                              .Skip((requestParams.PageNumber - 1) * requestParams.PageSize)
+                              .Take(requestParams.PageSize)
+                              .ToListAsync();
+        }
         public async Task Insert(T entity)
         {
             await _db.AddAsync(entity);

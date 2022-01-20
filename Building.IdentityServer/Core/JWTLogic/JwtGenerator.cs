@@ -1,4 +1,5 @@
 ﻿using Building.IdentityServer.Core.Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,12 @@ namespace Building.IdentityServer.Core.JWTLogic
 {
     public class JwtGenerator : IJwtGenerator
     {
+        private readonly IConfiguration Configuration;
+
+        public JwtGenerator(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
         public string CreateToken(User user)
         {
             var claims = new List<Claim>
@@ -18,7 +25,7 @@ namespace Building.IdentityServer.Core.JWTLogic
                 new Claim("email",user.Email),
                 new Claim("date",DateTime.Now.ToString())
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ecBTs2BzoDRC6ct5yMPPSFMrU1xMzOLd"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]));
             var credential = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var tokenDescription = new SecurityTokenDescriptor
             {

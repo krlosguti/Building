@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Building.OwnersAPI.Core.Application
 {
-    public class QueryOwnerFilter
+    public class QueryOwnerById
     {
         public class GetOwner : IRequest<OwnerDTO>
         {
@@ -32,7 +32,7 @@ namespace Building.OwnersAPI.Core.Application
             }
             public async Task<OwnerDTO> Handle(GetOwner request, CancellationToken cancellationToken)
             {
-                var owner = await _unitofWork.Owners.Get(q => q.IdOwner == request.Id);
+                var owner = await _unitofWork.Owners.Get(request.Id);
                 if (owner == null)
                     throw new Exception("Owner doesnt exist");
                 var ownerDTO = _mapper.Map<Owner, OwnerDTO>(owner);

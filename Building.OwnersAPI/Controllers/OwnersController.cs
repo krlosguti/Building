@@ -1,5 +1,6 @@
 ﻿using Building.OwnersAPI.Core.Application;
 using Building.OwnersAPI.Core.DTO;
+using Building.OwnersAPI.Core.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -30,9 +31,9 @@ namespace Building.OwnersAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<IEnumerable<OwnerDTO>>> GetOwners()
+        public async Task<ActionResult<IEnumerable<OwnerDTO>>> GetOwners([FromBody] RequestParameters requestParameters = null)
         {
-            return await _mediator.Send(new QueryOwner.GetOwner());
+            return await _mediator.Send(new QueryOwner.GetOwner(requestParameters));
         }
 
         // GET: api/Owners/5
@@ -42,7 +43,7 @@ namespace Building.OwnersAPI.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<OwnerDTO>> GetOwner(Guid id)
         {
-            return await _mediator.Send(new QueryOwnerFilter.GetOwner { Id = id });
+            return await _mediator.Send(new QueryOwnerById.GetOwner { Id = id });
         }
 
         // POST: api/Owners
