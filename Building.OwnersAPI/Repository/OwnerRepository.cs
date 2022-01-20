@@ -1,12 +1,9 @@
 ﻿using Building.OwnersAPI.Core.Context;
 using Building.OwnersAPI.Core.Entities;
-using Building.OwnersAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Building.OwnersAPI.Repository

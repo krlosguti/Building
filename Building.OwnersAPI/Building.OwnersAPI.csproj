@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <Content Remove="Extensions\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Core\Entities\FilterParameters.cs" />
     <Compile Remove="Core\Entities\PaginationEntity.cs" />
     <Compile Remove="Repository\GenericRepository.cs" />
