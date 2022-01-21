@@ -44,7 +44,7 @@ namespace Building.PropertyAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Building.PropertyAPI", Version = "v1" });
             });
             services.AddDbContext<PropertyContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("PropertyContext")));
+                    options.UseSqlite(Configuration.GetConnectionString("PropertyContext")));
 
             services.AddScoped<IOwnerService, OwnerService>();
 

@@ -45,7 +45,7 @@ namespace Building.IdentityServer
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Building.IdentityServer", Version = "v1" });
             });
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
+                    options.UseSqlite(Configuration.GetConnectionString("ApplicationDbContext")));
 
             var builder = services.AddIdentityCore<User>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);

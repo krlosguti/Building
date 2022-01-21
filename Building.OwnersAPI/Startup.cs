@@ -29,7 +29,7 @@ namespace Building.OwnersAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<OwnerContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("OwnerContext")));
+                    options.UseSqlite(Configuration.GetConnectionString("OwnerContext")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
