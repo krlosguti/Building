@@ -1,4 +1,6 @@
 ﻿using Building.PropertyAPI.Core.Context;
+using Building.PropertyAPI.RemoteService.Interface;
+using Building.PropertyAPI.RemoteService.Service;
 using System;
 using System.Threading.Tasks;
 
@@ -8,15 +10,17 @@ namespace Building.PropertyAPI.Repository
     {
         private readonly PropertyContext _context;
         private IPropertyRepository _properties;
+        private IOwnerService _ownerService;
 
-        public UnitofWork(PropertyContext context, IPropertyRepository properties)
+        public UnitofWork(PropertyContext context, IPropertyRepository properties, IOwnerService ownerService)
         {
             _context = context;
             _properties = properties;
+            _ownerService = ownerService;
         }
 
 
-        public IPropertyRepository Properties => _properties ??= new PropertyRepository(_context);
+        public IPropertyRepository Properties => _properties ??= new PropertyRepository(_context, _ownerService);
 
         public void Dispose()
         {

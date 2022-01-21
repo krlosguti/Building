@@ -1,5 +1,8 @@
 ﻿using Building.PropertyAPI.Core.Context;
+using Building.PropertyAPI.Core.DTO;
 using Building.PropertyAPI.Core.Entities;
+using Building.PropertyAPI.RemoteService.Interface;
+using Building.PropertyAPI.RemoteService.Service;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -14,12 +17,14 @@ namespace Building.PropertyAPI.Repository
         private readonly PropertyContext _context;
         private readonly DbSet<Property> _dbProperties;
         private readonly DbSet<PropertyImage> _dbPropertyImages;
+        private readonly IOwnerService _ownerService;
 
-        public PropertyRepository(PropertyContext context)
+        public PropertyRepository(PropertyContext context, IOwnerService ownerService)
         {
             _context = context;
             _dbProperties = _context.Set<Property>();
             _dbPropertyImages = _context.Set<PropertyImage>();
+            _ownerService = ownerService;
         }
 
         public Task Delete(Guid id)
@@ -27,7 +32,7 @@ namespace Building.PropertyAPI.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<Property> Get(Guid id)
+        public async Task<PropertyDTO> Get(Guid id, string token)
         {
             IQueryable<Property> query = _dbProperties;
             IQueryable<PropertyImage> queryI = _dbPropertyImages;
@@ -55,10 +60,25 @@ namespace Building.PropertyAPI.Repository
                     )
                     .Where(x => x.IdProperty == id);
 
-            return query.FirstOrDefault();
+            var property =  await query.FirstOrDefaultAsync();
+            var result = _ownerService.GetOwner(property.IdOwner,token);
+            var propertyDTO = new PropertyDTO
+            {
+                IdProperty = property.IdProperty,
+                Address = property.Address,
+                CodeInternal= property.CodeInternal,
+                IdOwner= property.IdOwner,
+                Name = property.Name,
+                Price = property.Price,
+                Year = property.Year,
+                PropertyImages = property.PropertyImages,
+                Owner = result.Result.owner
+            };
+            return propertyDTO;
+
         }
 
-        public async Task<List<Property>> GetAll(RequestParameters request = null)
+        public async Task<List<PropertyDTO>> GetAll(string token, RequestParameters request = null)
         {
             IQueryable<Property> query = _dbProperties;
             IQueryable<PropertyImage>  queryI = _dbPropertyImages;
@@ -91,15 +111,15 @@ namespace Building.PropertyAPI.Repository
 
             if (request.pageParameters == null)
             {
-                query = (from p in query
-                                  select new Property
+                var queryDTO = (from p in query
+                                  select new PropertyDTO
                                   {
                                       IdProperty = p.IdProperty,
                                       Name = p.Name,
                                       Address = p.Address,
                                       CodeInternal = p.CodeInternal,
                                       IdOwner = p.IdOwner,
-                                      Price = p.Price,
+                                          Price = p.Price,
                                       Year = p.Year,
                                       PropertyImages = (from i in queryI
                                                         where i.IdProperty == p.IdProperty
@@ -112,11 +132,11 @@ namespace Building.PropertyAPI.Repository
                                                         }).ToList()
                                   }
                     ).AsQueryable();
-                return await query.ToListAsync();
+                return await queryDTO.ToListAsync();
             }
 
-            query = (from p in query
-                              select new Property
+            var queryDTO2 = (from p in query
+                              select new PropertyDTO
                               {
                                   IdProperty = p.IdProperty,
                                   Name = p.Name,
@@ -137,7 +157,7 @@ namespace Building.PropertyAPI.Repository
                               }
                     ).AsQueryable();
 
-            return await query.AsNoTracking()
+            return await queryDTO2.AsNoTracking()
                               .Skip((request.pageParameters.PageNumber - 1) * request.pageParameters.PageSize)
                               .Take(request.pageParameters.PageSize)
                               .ToListAsync();

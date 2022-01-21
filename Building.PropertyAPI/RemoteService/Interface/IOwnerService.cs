@@ -10,6 +10,6 @@ namespace Building.PropertyAPI.RemoteService.Interface
     /// </summary>
     /// <param name="Id">Identifier of the owner</param>
     /// <returns>result true, Owner y ErrorMessage null. Or result false, owner null, Error Message</returns>
-        Task<(bool result, OwnerRemote owner, string ErrorMessage)> GetOwner(Guid Id);
+        Task<(bool result, OwnerDTO owner, string ErrorMessage)> GetOwner(Guid Id, string token);
     }
 }

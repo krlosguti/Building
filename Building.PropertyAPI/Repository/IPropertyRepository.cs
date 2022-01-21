@@ -1,4 +1,5 @@
-﻿using Building.PropertyAPI.Core.Entities;
+﻿using Building.PropertyAPI.Core.DTO;
+using Building.PropertyAPI.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,9 +8,9 @@ namespace Building.PropertyAPI.Repository
 {
     public interface IPropertyRepository
     {
-        Task<Property> Get(Guid id);
+        Task<PropertyDTO> Get(Guid id, string token);
 
-        Task<List<Property>> GetAll(RequestParameters request = null);
+        Task<List<PropertyDTO>> GetAll(string token, RequestParameters request = null);
 
         Task Insert(Property property);
 

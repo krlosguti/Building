@@ -23,29 +23,20 @@ namespace Building.PropertyAPI.RemoteService.Service
             _httpClient = httpClient;
             _logger = logger;
         }
-        public async Task<(bool result, OwnerRemote owner, string ErrorMessage)> GetOwner(Guid Id)
+        public async Task<(bool result, OwnerDTO owner, string ErrorMessage)> GetOwner(Guid Id, string token)
         {
             try
             {
                 var client = _httpClient.CreateClient("Owners");
                 var contentType = new MediaTypeWithQualityHeaderValue("application/json");
                 client.DefaultRequestHeaders.Accept.Add(contentType);
-                //var token = _httpContextAccessor.HttpContext.Session.GetString("token");
-                //var token = _userSession.GetTokenSession();
-                // Acquire the access token.
-                string[] scopes = new string[] { "user.read" };
-                string token = "1111";
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                
-
-
-
+                client.DefaultRequestHeaders.Add("Authorization", token);
                 var response = await client.GetAsync($"api/Owners/{Id}");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-                    var result = JsonSerializer.Deserialize<OwnerRemote>(content, options);
+                    var result = JsonSerializer.Deserialize<OwnerDTO>(content, options);
                     return (true, result, null);
                 }
                 return (false, null, response.ReasonPhrase);

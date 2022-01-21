@@ -28,7 +28,7 @@ namespace Building.PropertyAPI.Controllers
         private string GetToken()
         {
             var token = Request.Headers.FirstOrDefault(x => x.Key == "Authorization").Value.FirstOrDefault();
-            return (token != null)? token.Substring(7,token.Length-7):token;
+            return token;
         }
 
         // GET: api/Owners

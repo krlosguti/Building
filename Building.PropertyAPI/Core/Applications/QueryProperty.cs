@@ -43,8 +43,8 @@ namespace Building.PropertyAPI.Core.Applications
             {
                 try
                 {
-                    var properties = await _unitofWork.Properties.GetAll(request.requestParameters);
-                    var propertiesDTO = _mapper.Map<List<Property>, List<PropertyDTO>>(properties);
+                    var propertiesDTO = await _unitofWork.Properties.GetAll(request.token, request.requestParameters);
+                    //var propertiesDTO = _mapper.Map<List<Property>, List<PropertyDTO>>(properties);
                     return propertiesDTO;
                 }
                 catch (Exception ex)

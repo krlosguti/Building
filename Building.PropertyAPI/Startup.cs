@@ -1,5 +1,7 @@
 using Building.PropertyAPI.Core.Applications;
 using Building.PropertyAPI.Core.Context;
+using Building.PropertyAPI.RemoteService.Interface;
+using Building.PropertyAPI.RemoteService.Service;
 using Building.PropertyAPI.Repository;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,11 +46,19 @@ namespace Building.PropertyAPI
             services.AddDbContext<PropertyContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PropertyContext")));
 
+            services.AddScoped<IOwnerService, OwnerService>();
+
             services.AddMediatR(typeof(QueryProperty.HandlerProperty).Assembly);
+            services.AddMediatR(typeof(QueryPropertyById.HandlerProperty).Assembly);
             services.AddAutoMapper(typeof(QueryProperty.HandlerProperty));
 
             services.AddTransient<IPropertyRepository, PropertyRepository>();
             services.AddTransient<IUnitofWork, UnitofWork>();
+
+            services.AddHttpClient("Owners", config =>
+            {
+                config.BaseAddress = new Uri(Configuration["Services:Owners"]);
+            });
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
