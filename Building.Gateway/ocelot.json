@@ -1,6 +1,7 @@
 {
   "Routes": [
     {
+      //API OWNER
       "DownstreamPathTemplate": "/api/Owners",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -64,6 +65,89 @@
         "AllowedScopes": []
       }
     },
+    //API PROPERTY
+    {
+      "DownstreamPathTemplate": "/api/Properties",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "1945"
+        }
+      ],
+      "UpstreamPathTemplate": "/properties",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Properties/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "1945"
+        }
+      ],
+      "UpstreamPathTemplate": "/properties/{id}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Properties/AddProperty",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "1945"
+        }
+      ],
+      "UpstreamPathTemplate": "/addproperty",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Properties/AddImage",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "1945"
+        }
+      ],
+      "UpstreamPathTemplate": "/addimage",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Properties/UpdatePrice",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "1945"
+        }
+      ],
+      "UpstreamPathTemplate": "/updateprice",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
+    //API USER
     {
       "DownstreamPathTemplate": "/api/User",
       "DownstreamScheme": "http",

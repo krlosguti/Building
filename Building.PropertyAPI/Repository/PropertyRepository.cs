@@ -3,6 +3,7 @@ using Building.PropertyAPI.Core.DTO;
 using Building.PropertyAPI.Core.Entities;
 using Building.PropertyAPI.RemoteService.Interface;
 using Building.PropertyAPI.RemoteService.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
@@ -27,9 +28,39 @@ namespace Building.PropertyAPI.Repository
             _ownerService = ownerService;
         }
 
-        public Task Delete(Guid id)
+        public async Task<bool> ExistProperty(Guid IdProperty)
         {
-            throw new NotImplementedException();
+            return await _dbProperties.AnyAsync(x => x.IdProperty == IdProperty);
+        }
+        public async Task AddImage(Guid IdProperty, IFormFile ImageFile)
+        {
+            if (ImageFile == null) throw new Exception("Image file invalid");
+
+            var property = await _dbProperties.FirstOrDefaultAsync(x => x.IdProperty == IdProperty);
+
+            if (property == null) throw new Exception("Property doesn't exist");
+
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + ImageFile.FileName;
+            var propertyImage = new PropertyImage
+            {
+                IdPropertyImage = Guid.NewGuid(),
+                File = uniqueFileName,
+                Enabled = true,
+                IdProperty = IdProperty
+            };
+
+            await _dbPropertyImages.AddAsync(propertyImage);
+        }
+
+        public async void UpdatePrice(Guid IdProperty, long NewPrice)
+        {
+            var property = await _dbProperties.FirstOrDefaultAsync(x => x.IdProperty == IdProperty);
+
+            if (property == null) throw new Exception("Property doesn't exist");
+
+            property.Price = NewPrice;
+            _dbProperties.Attach(property);
+            _context.Entry(property).State = EntityState.Modified;
         }
 
         public async Task<PropertyDTO> Get(Guid id, string token)
@@ -164,14 +195,27 @@ namespace Building.PropertyAPI.Repository
         }
 
 
-        public Task Insert(Property property)
+        public async Task Insert(Property property, ICollection<IFormFile> ListImages = null)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Update(Property property)
-        {
-            throw new NotImplementedException();
+            
+            if (ListImages != null)
+            {
+                string uniqueFileName = "";
+                foreach (var obj in ListImages)
+                {
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + obj.FileName;
+                    //upload the image file in local server
+                    var propertyImage = new PropertyImage
+                    {
+                        IdPropertyImage = Guid.NewGuid(),
+                        File = uniqueFileName,
+                        Enabled = true,
+                        IdProperty = property.IdProperty
+                    };
+                    await _dbPropertyImages.AddAsync(propertyImage);
+                }
+            }
+            await _dbProperties.AddAsync(property);
         }
     }
 }

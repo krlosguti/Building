@@ -1,5 +1,6 @@
 ﻿using Building.PropertyAPI.Core.DTO;
 using Building.PropertyAPI.Core.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,10 +13,12 @@ namespace Building.PropertyAPI.Repository
 
         Task<List<PropertyDTO>> GetAll(string token, RequestParameters request = null);
 
-        Task Insert(Property property);
+        Task Insert(Property property, ICollection<IFormFile> ListImages = null);
 
-        Task Delete(Guid id);
+        void UpdatePrice(Guid IdProperty, long NewPrice);
 
-        void Update(Property property);
+        Task AddImage(Guid IdProperty, IFormFile ImageFile);
+
+        Task<bool> ExistProperty(Guid IdProperty);
     }
 }

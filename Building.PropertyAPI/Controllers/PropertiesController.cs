@@ -31,6 +31,16 @@ namespace Building.PropertyAPI.Controllers
             return token;
         }
 
+        [HttpPost]
+        [Route("AddImage")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<Unit>> AddImage([FromForm] AddImage.ExecuteAddImage data)
+        {
+            return await _mediator.Send(data);
+        }
+
         // GET: api/Owners
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -51,6 +61,28 @@ namespace Building.PropertyAPI.Controllers
         {
             var _token = GetToken();
             return await _mediator.Send(new QueryPropertyById.GetProperty { IdProperty = id, token = _token });
+        }
+
+        // POST: api/Properties
+        [HttpPost("AddProperty")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<Unit>> Add(NewProperty.ExecuteProperty data)
+        {
+            return await _mediator.Send(data);
+        }
+
+        // PUT: api/Owners
+        [HttpPut("UpdatePrice")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<Unit>> Update(UpdatePrice.ExecuteUpdatePrice data)
+        {
+            return await _mediator.Send(data);
         }
     }
 }
