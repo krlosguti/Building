@@ -18,12 +18,10 @@ namespace Building.OwnersAPI.Controllers
     public class OwnersController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public OwnersController(IMediator mediator, IWebHostEnvironment webHostEnvironment)
+        public OwnersController(IMediator mediator)
         {
             _mediator = mediator;
-            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: api/Owners
