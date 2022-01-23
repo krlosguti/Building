@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Building.PropertyAPI.Core.Context
 {
+    /// <summary>
+    /// context to connect with property database.  It has two tables property and propertyImage
+    /// </summary>
     public class PropertyContext : DbContext
     {
         public PropertyContext(DbContextOptions<PropertyContext> options)

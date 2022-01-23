@@ -6,6 +6,7 @@ namespace Building.PropertyAPI.Core.Applications
 {
     public class MappingProfile : Profile
     {
+        //creates the map from property to propertyDTO
         public MappingProfile()
         {
             CreateMap<Property, PropertyDTO>();

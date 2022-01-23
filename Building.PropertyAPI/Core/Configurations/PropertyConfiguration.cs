@@ -6,6 +6,8 @@ namespace Building.PropertyAPI.Core.Configurations
 {
     public class PropertyConfiguration : IEntityTypeConfiguration<Property>
     {
+        //Validates information of a property
+        //it is used when the database is created
         public void Configure(EntityTypeBuilder<Property> entity)
         {
             entity.HasKey(e => e.IdProperty);

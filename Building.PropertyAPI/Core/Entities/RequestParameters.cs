@@ -41,7 +41,9 @@
     }
     public class RequestParameters
     {
+        //parameters for searching and ordering information
         public FilterParameters filterParameters { get; set; } = null;
+        //parameters to paginate information
         public PageParameters pageParameters { get; set; } = null;
     }
 }

@@ -6,6 +6,11 @@ namespace Building.OwnersAPI.Core.Configurations
 {
     public class OwnerConfiguration : IEntityTypeConfiguration<Owner>
     {
+        /// <summary>
+        /// Configurate fields of the owner model
+        /// This information is used when the database is created
+        /// </summary>
+        /// <param name="entity"></param>
         public void Configure(EntityTypeBuilder<Owner> entity)
         {
             entity.HasKey(e => e.IdOwner);

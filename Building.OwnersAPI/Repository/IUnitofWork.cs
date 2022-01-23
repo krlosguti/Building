@@ -6,7 +6,7 @@ namespace Building.OwnersAPI.Repository
 {
     public interface IUnitofWork:IDisposable
     {
-        IOwnerRepository Owners { get; }
+        public IOwnerRepository Owners { get; }
         Task Save();
     }
 }

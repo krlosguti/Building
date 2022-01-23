@@ -7,7 +7,9 @@ namespace Building.OwnersAPI.Repository
 {
     public class UnitofWork : IUnitofWork
     {
+        //context to connect with owners database
         private readonly OwnerContext _context;
+        //repository to management transactions in the owner database
         private IOwnerRepository _owners;
 
         public UnitofWork(OwnerContext context, IOwnerRepository owners)

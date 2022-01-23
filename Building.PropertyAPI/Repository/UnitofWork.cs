@@ -8,8 +8,11 @@ namespace Building.PropertyAPI.Repository
 {
     public class UnitofWork : IUnitofWork
     {
+        //context to connect with property database
         private readonly PropertyContext _context;
+        //repository to management transactions in the property database
         private IPropertyRepository _properties;
+        //services to get information about the owner property from owner microservice
         private IOwnerService _ownerService;
 
         public UnitofWork(PropertyContext context, IPropertyRepository properties, IOwnerService ownerService)

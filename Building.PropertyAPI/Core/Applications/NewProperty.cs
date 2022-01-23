@@ -11,8 +11,14 @@ using System.Threading.Tasks;
 
 namespace Building.PropertyAPI.Core.Applications
 {
+    /// <summary>
+    /// add a new property
+    /// </summary>
     public class NewProperty
     {
+        /// <summary>
+        /// information about the new property
+        /// </summary>
         public class ExecuteProperty : IRequest
         {
             /// <summary>
@@ -47,6 +53,9 @@ namespace Building.PropertyAPI.Core.Applications
 
         public class ExecuteValidation : AbstractValidator<ExecuteProperty>
         {
+            /// <summary>
+            /// validates name and address are not empty.  validates year is less or equal to the current year.
+            /// </summary>
             public ExecuteValidation()
             {
                 RuleFor(x => x.Name).NotEmpty();
@@ -56,17 +65,27 @@ namespace Building.PropertyAPI.Core.Applications
         }
         public class HandlerProperty : IRequestHandler<ExecuteProperty>
         {
+            //used to record information about events
             private readonly ILogger<HandlerProperty> _logger;
+            //allow to group transactions of the database and finally save changes
             private readonly IUnitofWork _unitofWork;
             public HandlerProperty(ILogger<HandlerProperty> logger, IUnitofWork unitofWork)
             {
                 _logger = logger;
                 _unitofWork = unitofWork;
             }
+            /// <summary>
+            /// Add a new property
+            /// </summary>
+            /// <param name="request">information about the property: name, address, codeinternal, year, price, idowner, images list</param>
+            /// <param name="cancellationToken"></param>
+            /// <returns></returns>
+            /// <exception cref="Exception"></exception>
             public async Task<Unit> Handle(ExecuteProperty request, CancellationToken cancellationToken)
             {
                 try
                 {
+                    //Create a new property identifier and the new property
                     var Id = Guid.NewGuid();
                     var property = new Property
                     {
@@ -78,6 +97,7 @@ namespace Building.PropertyAPI.Core.Applications
                         Year = request.Year,
                         IdOwner = request.IdOwner
                     };
+                    //Call Unit of work to insert the new property and upload the images list
                     await _unitofWork.Properties.Insert(property, request.ListImages);
                     await _unitofWork.Save();
                     return Unit.Value;

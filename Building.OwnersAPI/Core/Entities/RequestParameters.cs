@@ -40,7 +40,9 @@
         public bool asc { get; set; } = true;
     }
     public class RequestParameters { 
+        //parameters to search and order
         public FilterParameters filterParameters { get; set; } = null;
+        //parameters to paginate
         public PageParameters pageParameters { get; set; } = null; 
     }
 }

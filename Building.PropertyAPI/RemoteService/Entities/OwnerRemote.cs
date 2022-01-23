@@ -2,6 +2,9 @@
 
 namespace Building.PropertyAPI.RemoteService.Entities
 {
+    /// <summary>
+    /// model used to get information about owner from owner microservice
+    /// </summary>
     public class OwnerRemote
     {
         /// <summary>

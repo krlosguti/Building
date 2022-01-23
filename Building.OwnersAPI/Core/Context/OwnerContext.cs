@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Building.OwnersAPI.Core.Context
 {
+    /// <summary>
+    /// Context to connect with the owner database
+    /// </summary>
     public class OwnerContext : DbContext
     {
         public OwnerContext(DbContextOptions<OwnerContext> options)

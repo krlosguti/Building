@@ -13,10 +13,22 @@ using System.Threading.Tasks;
 
 namespace Building.PropertyAPI.Core.Applications
 {
+    /// <summary>
+    /// Get properties list agree to the parameters of filtering, ordering and pagination
+    /// </summary>
     public class QueryProperty
     {
         public class GetProperty : IRequest<List<PropertyDTO>>
         {
+            /// <summary>
+            /// Get properties list agree to the parameters of filtering, ordering and pagination
+            /// </summary>
+            /// <param name="requestParameters">
+            /// it has filterParameters with information about searching and ordering.  If it is null then it doesn't filter and doesn't order
+            /// it has pageParameters with information about pagination. If it is null doesn't paginate
+            /// it has token to send request to the owner microservice with the objective to get information about property owner
+            /// </param>
+            /// <param name="token"></param>
             public GetProperty(RequestParameters requestParameters,string token)
             {
                 this.requestParameters = requestParameters;
@@ -34,17 +46,31 @@ namespace Building.PropertyAPI.Core.Applications
             private readonly IUnitofWork _unitofWork;
             public HandlerProperty(IUnitofWork unitofWork, IMapper mapper, ILogger<HandlerProperty> logger)
             {
+                //used to map property to propertyDTO
                 _mapper = mapper;
+                //used to record information about events
                 _logger = logger;
+                //allow to group transactions of the database and finally save changes
                 _unitofWork = unitofWork;
             }
 
+            /// <summary>
+            /// Get properties list agree to the parameters of filtering, ordering and pagination
+            /// </summary>
+            /// <param name="request">
+            /// it has filterParameters with information about searching and ordering.  If it is null then it doesn't filter and doesn't order
+            /// it has pageParameters with information about pagination. If it is null doesn't paginate
+            /// it has token to send request to the owner microservice with the objective to get information about property owner
+            /// </param>
+            /// <param name="cancellationToken"></param>
+            /// <returns></returns>
+            /// <exception cref="Exception"></exception>
             public async Task<List<PropertyDTO>> Handle(GetProperty request, CancellationToken cancellationToken)
             {
                 try
                 {
+                    //Call unit of work to retrieve the property list agree parameters of filtering and pagination
                     var propertiesDTO = await _unitofWork.Properties.GetAll(request.token, request.requestParameters);
-                    //var propertiesDTO = _mapper.Map<List<Property>, List<PropertyDTO>>(properties);
                     return propertiesDTO;
                 }
                 catch (Exception ex)

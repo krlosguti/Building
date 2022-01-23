@@ -11,6 +11,9 @@ namespace Building.IdentityServer.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        /// <summary>
+        /// injecting MediatR to use CQRS Pattern
+        /// </summary>
         private readonly IMediator _mediator;
 
         public UserController(IMediator mediator)
@@ -18,19 +21,31 @@ namespace Building.IdentityServer.Controllers
             _mediator = mediator;
         }
 
-
+        /// <summary>
+        /// api to add an user
+        /// </summary>
+        /// <param name="request">username, email and password</param>
+        /// <returns>UserDTO: username, id, token</returns>
         [HttpPost("add")]
         public async Task<ActionResult<UserDTO>> PostUser(AddNewUser.UserAdd request)
         {
             return await _mediator.Send(request);
         }
-
+        /// <summary>
+        /// user login
+        /// </summary>
+        /// <param name="request">username and password</param>
+        /// <returns>UserDTO: username, id, authentication token</returns>
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> LoginUser(Login.UserLogin request)
         {
             return await _mediator.Send(request);
         }
 
+        /// <summary>
+        /// Get user connected currently 
+        /// </summary>
+        /// <returns>UserDTO: username, id, token</returns>
         [HttpGet]
         public async Task<ActionResult<UserDTO>> GetUser()
         {

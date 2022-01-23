@@ -17,6 +17,7 @@ namespace Building.OwnersAPI.Controllers
     [ApiController]
     public class OwnersController : ControllerBase
     {
+        //inject mediator to use CQRS Pattern
         private readonly IMediator _mediator;
 
         public OwnersController(IMediator mediator)
@@ -24,6 +25,14 @@ namespace Building.OwnersAPI.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Get owners list agree to the parameters of filtering, ordering and pagination
+        /// </summary>
+        /// <param name="requestParameters">
+        /// it has filterParameters with information about searching and ordering.  If it is null then it doesn't filter and doesn't order
+        /// it has pageParameters with information about pagination. If it is null doesn't paginate
+        /// </param>
+        /// <returns>ownerDTO list agree previous criteria</returns>
         // GET: api/Owners
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -34,6 +43,11 @@ namespace Building.OwnersAPI.Controllers
             return await _mediator.Send(new QueryOwner.GetOwner(requestParameters));
         }
 
+        /// <summary>
+        /// Get information about the owner with IdOwner equal to id
+        /// </summary>
+        /// <param name="id">id of the owner</param>
+        /// <returns>ownerDTO model with information about the owner</returns>
         // GET: api/Owners/5
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -44,6 +58,15 @@ namespace Building.OwnersAPI.Controllers
             return await _mediator.Send(new QueryOwnerById.GetOwner { Id = id });
         }
 
+        /// <summary>
+        /// Add a new owner
+        /// </summary>
+        /// <param name="data">
+        /// name, address, birthday date and photo file.
+        /// </param>
+        /// <returns>
+        /// add the new owner and updload the photo file to the local server
+        /// </returns>
         // POST: api/Owners
         [HttpPost("AddOwner")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -55,6 +78,13 @@ namespace Building.OwnersAPI.Controllers
             return await _mediator.Send(data);
         }
 
+        /// <summary>
+        /// Update owner information
+        /// </summary>
+        /// <param name="data">
+        /// name, address, birthday and photo file
+        /// </param>
+        /// <returns></returns>
         // PUT: api/Owners
         [HttpPut("UpdateOwner")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

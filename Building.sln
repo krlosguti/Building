@@ -5,11 +5,13 @@ VisualStudioVersion = 17.1.32104.313
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Building.OwnersAPI", "Building.OwnersAPI\Building.OwnersAPI.csproj", "{8696803E-AC59-4B76-B9BF-E4F05B92B7BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Building.PropertyAPI", "Building.PropertyAPI\Building.PropertyAPI.csproj", "{3015AADF-72AF-4698-B42E-DB7103BD08AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Building.PropertyAPI", "Building.PropertyAPI\Building.PropertyAPI.csproj", "{3015AADF-72AF-4698-B42E-DB7103BD08AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Building.IdentityServer", "Building.IdentityServer\Building.IdentityServer.csproj", "{B355747B-67F8-47AB-B037-3E418E555CCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Building.IdentityServer", "Building.IdentityServer\Building.IdentityServer.csproj", "{B355747B-67F8-47AB-B037-3E418E555CCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Building.Gateway", "Building.Gateway\Building.Gateway.csproj", "{4EA0DC0B-CBA3-462E-82E6-E86500FF71C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Building.Gateway", "Building.Gateway\Building.Gateway.csproj", "{4EA0DC0B-CBA3-462E-82E6-E86500FF71C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bulding.Tests", "Bulding.Tests\Bulding.Tests.csproj", "{D5652CAC-2745-490D-8CA8-23A66FC9E664}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4EA0DC0B-CBA3-462E-82E6-E86500FF71C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EA0DC0B-CBA3-462E-82E6-E86500FF71C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EA0DC0B-CBA3-462E-82E6-E86500FF71C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5652CAC-2745-490D-8CA8-23A66FC9E664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5652CAC-2745-490D-8CA8-23A66FC9E664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5652CAC-2745-490D-8CA8-23A66FC9E664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5652CAC-2745-490D-8CA8-23A66FC9E664}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

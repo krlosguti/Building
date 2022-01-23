@@ -37,6 +37,9 @@ namespace Building.OwnersAPI.Core.Application
             public DateTime Birthday { get; set; } = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// validate that id isn't empty
+        /// </summary>
         public class ExecuteValidation : AbstractValidator<ExecuteOwner>
         {
             public ExecuteValidation()
@@ -46,8 +49,11 @@ namespace Building.OwnersAPI.Core.Application
         }
         public class HandlerOwner : IRequestHandler<ExecuteOwner>
         {
+            //used to ge information about local server
             private readonly IWebHostEnvironment _webHostEnvironment;
+            //used to record information about events
             private readonly ILogger<HandlerOwner> _logger;
+            //allows to group transactions of the database and finally save changes
             private readonly IUnitofWork _unitofWork;
             public HandlerOwner(ILogger<HandlerOwner> logger, IUnitofWork unitofWork, IWebHostEnvironment webHostEnvironment)
             {
@@ -55,11 +61,21 @@ namespace Building.OwnersAPI.Core.Application
                 _unitofWork = unitofWork;
                 _webHostEnvironment = webHostEnvironment;
             }
+
+            /// <summary>
+            /// Update owner information
+            /// </summary>
+            /// <param name="request">name, address, birthday and photo file</param>
+            /// <param name="cancellationToken"></param>
+            /// <returns></returns>
+            /// <exception cref="Exception"></exception>
             public async Task<Unit> Handle(ExecuteOwner request, CancellationToken cancellationToken)
             {
-                //delete previous file
+                //delete previous file. It is not impelemented because it is neccesary to grant permissions in the local server
+                //updload the photo file to the local server. Really get the unique file name. 
+                //It doesn't upload the photo file because it is neccesary to grant permissiones in the local server
                 string uniqueFileName = UploadedFile(request.PhotoFile);
-
+                //create a new onwer
                 var owner = new Owner
                 {
                     IdOwner = request.IdOwner,
@@ -71,6 +87,7 @@ namespace Building.OwnersAPI.Core.Application
 
                 try
                 {
+                    //update the owner in the Owners database
                     _unitofWork.Owners.Update(owner);
                     await _unitofWork.Save();
                     return Unit.Value;
@@ -92,11 +109,14 @@ namespace Building.OwnersAPI.Core.Application
 
                 if (PhotoFile != null)
                 {
+                    //get the folder name of the local server
                     //string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "Photos");
+                    //assgin a unique file name to the photo file
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + PhotoFile.FileName;
                     //string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                     //using (var fileStream = new FileStream(filePath, FileMode.Create))
                     //{
+                    //    upload the photo file to the local server
                     //    PhotoFile.CopyTo(fileStream);
                     //}
                 }
