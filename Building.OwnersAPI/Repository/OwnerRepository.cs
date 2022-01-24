@@ -24,6 +24,11 @@ namespace Building.OwnersAPI.Repository
             _db = _context.Set<Owner>();
         }
 
+        public OwnerContext GetContext()
+        {
+            return _context;
+        }
+
         /// <summary>
         /// Deletes the owner identified by id
         /// </summary>

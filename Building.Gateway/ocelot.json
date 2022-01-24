@@ -156,6 +156,24 @@
       }
     },
 
+    //UPDATE PROPERTY: /updateproperty
+    {
+      "DownstreamPathTemplate": "/api/Properties/UpdateProperty",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": "1945"
+        }
+      ],
+      "UpstreamPathTemplate": "/updateproperty",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
+    },
+
     //API USER
     //GET ALL USERS: /user
     {

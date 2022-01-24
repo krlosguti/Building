@@ -22,5 +22,7 @@ namespace Building.PropertyAPI.Repository
         Task AddImage(Guid IdProperty, IFormFile ImageFile);
         //Return true if the property with identifier IdProperty Exist, otherwise false
         Task<bool> ExistProperty(Guid IdProperty);
+        //Update information about a property
+        void UpdateProperty(Property property);
     }
 }

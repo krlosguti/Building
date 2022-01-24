@@ -1,4 +1,5 @@
-﻿using Building.OwnersAPI.Core.Entities;
+﻿using Building.OwnersAPI.Core.Context;
+using Building.OwnersAPI.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -11,6 +12,9 @@ namespace Building.OwnersAPI.Repository
     /// </summary>
     public interface IOwnerRepository 
     {
+        //returns the context
+        public OwnerContext GetContext();
+
         //get the owner by id
         Task<Owner> Get(Guid id);
         //Get owner list agree to the parameters of filtering, ordering and pagination

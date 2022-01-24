@@ -106,7 +106,7 @@ namespace Building.PropertyAPI.Controllers
         }
         /// <summary>
         /// Update the information about the price of the specific property
-        /// the method used is post method. It was possible to use patch too because is partial updating.
+        /// the method used is put method. It was possible to use patch too because is partial updating.
         /// </summary>
         /// <param name="data">property identifier and new price</param>
         /// <returns></returns>
@@ -117,6 +117,23 @@ namespace Building.PropertyAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<Unit>> Update(UpdatePrice.ExecuteUpdatePrice data)
+        {
+            return await _mediator.Send(data);
+        }
+
+        /// <summary>
+        /// Update the information about of the specific property
+        /// the method used is put method.
+        /// </summary>
+        /// <param name="data">property identifier</param>
+        /// <returns></returns>
+        // PUT: api/Owners
+        [HttpPut("UpdateProperty")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<Unit>> UpdateProperty(UpdateProperty.RequestUpdateProperty data)
         {
             return await _mediator.Send(data);
         }
