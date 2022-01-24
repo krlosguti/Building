@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Building.IdentityServer", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Building.Gateway", "Building.Gateway\Building.Gateway.csproj", "{4EA0DC0B-CBA3-462E-82E6-E86500FF71C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bulding.Tests", "Bulding.Tests\Bulding.Tests.csproj", "{D5652CAC-2745-490D-8CA8-23A66FC9E664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bulding.Tests", "Bulding.Tests\Bulding.Tests.csproj", "{D5652CAC-2745-490D-8CA8-23A66FC9E664}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readme", "Readme", "{2602CA99-8B4F-4D5A-8218-B78A9B2EB3F5}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\kroda\Documents\Prueba Carlos Gutierrez.pdf = C:\Users\kroda\Documents\Prueba Carlos Gutierrez.pdf
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
